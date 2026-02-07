@@ -171,24 +171,43 @@ OPTIONS:
 
 ## Running as Systemd Service (Linux)
 
-1. Edit the service file:
+1. Copy the service template:
 ```bash
-nano claude-session-starter.service
-# Update User= and paths
-```
-
-2. Install and start:
-```bash
-sudo cp claude-session-starter.service /etc/systemd/system/
+sudo cp claude-session-starter@.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable claude-session-starter
-sudo systemctl start claude-session-starter
 ```
 
-3. Check status:
+2. **(Optional)** If you cloned the repo to a non-default location, create an environment file:
 ```bash
-sudo systemctl status claude-session-starter
+# For user 'john' with installation at /opt/claude-session-starter
+sudo nano /etc/default/claude-session-starter-john
 ```
+
+Add this line (replace with your actual path):
+```bash
+INSTALL_PATH=/opt/claude-session-starter
+```
+
+**Note:** If you don't create this file, it defaults to `/home/username/claude-session-starter`
+
+3. Enable and start for your user (replace `username` with your actual username):
+```bash
+sudo systemctl enable claude-session-starter@username.service
+sudo systemctl start claude-session-starter@username.service
+```
+
+Example for user `john`:
+```bash
+sudo systemctl enable claude-session-starter@john.service
+sudo systemctl start claude-session-starter@john.service
+```
+
+4. Check status:
+```bash
+sudo systemctl status claude-session-starter@username.service
+```
+
+**Note:** The service file is a systemd template that automatically uses the correct username and paths. The `%i` in the service file is replaced with whatever comes after the `@` symbol.
 
 ## Cron Job Setup
 

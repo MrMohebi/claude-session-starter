@@ -8,10 +8,14 @@ Documentation=https://github.com/MrMohebi/claude-session-starter
 Type=simple
 User=%i
 Group=%i
-WorkingDirectory=/home/%i/claude-session-starter
 
-# Main service command
-ExecStart=/home/%i/claude-session-starter/claude-session-starter.sh --daemon
+# Load installation path from environment file
+# Create /etc/default/claude-session-starter-%i with:
+# INSTALL_PATH=/path/to/claude-session-starter
+EnvironmentFile=-/etc/default/claude-session-starter-%i
+
+# Main service command (uses INSTALL_PATH from environment file, defaults to /home/%i/claude-session-starter)
+ExecStart=/bin/sh -c 'exec ${INSTALL_PATH:-/home/%i/claude-session-starter}/claude-session-starter.sh --daemon'
 
 # Restart policy
 Restart=always
@@ -24,10 +28,10 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=/home/%i/.config/claude-session-starter
+ReadWritePaths=/home/%i/.config/claude-session-starter /home/%i/.claude
 
 # Environment
-Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=/home/%i/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 # Logging
 StandardOutput=journal
