@@ -1,5 +1,9 @@
 # Claude Session Starter
 
+[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue?logo=docker)](https://github.com/MrMohebi/claude-session-starter/pkgs/container/claude-session-starter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Multi-Platform](https://img.shields.io/badge/platform-amd64%20%7C%20arm64-lightgrey)](https://github.com/MrMohebi/claude-session-starter)
+
 **Automatically trigger Claude sessions at your chosen hours throughout the day.**
 
 **For Claude Pro & Max subscribers** - uses Claude CLI with OAuth authentication.
@@ -15,6 +19,16 @@ Claude sessions reset at fixed times. This tool lets you control *when* sessions
 - **Claude Pro or Max subscription**
 - Claude CLI installed and authenticated
 - Bash shell (Linux, macOS, WSL) OR Docker
+
+## Pre-built Docker Image
+
+Docker images are automatically built and published to GitHub Container Registry:
+
+**Latest release:** `ghcr.io/mrmohebi/claude-session-starter:latest`
+
+Supported platforms:
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM, Apple Silicon)
 
 ## Quick Start
 
@@ -48,11 +62,10 @@ nohup ./claude-session-starter.sh --daemon > /dev/null 2>&1 &
 
 ### Option 2: Docker (For users who don't want to install CLI locally)
 
+**Pre-built image available at:** `ghcr.io/mrmohebi/claude-session-starter:latest`
+
 **Method A: Use your existing Claude CLI credentials**
 ```bash
-# Build image
-docker build -t claude-session-starter .
-
 # Run with your local Claude credentials
 docker run -d \
   --name claude-session-starter \
@@ -61,19 +74,16 @@ docker run -d \
   -e TZ='America/New_York' \
   -v ~/.claude:/root/.claude:ro \
   -v session-config:/root/.config/claude-session-starter \
-  claude-session-starter
+  ghcr.io/mrmohebi/claude-session-starter:latest
 ```
 
 **Method B: Authenticate inside Docker container**
 ```bash
-# Build image
-docker build -t claude-session-starter .
-
 # Run container interactively to authenticate
 docker run -it \
   -v claude-data:/root/.claude \
   -v session-config:/root/.config/claude-session-starter \
-  claude-session-starter bash
+  ghcr.io/mrmohebi/claude-session-starter:latest bash
 
 # Inside container, authenticate:
 claude
@@ -90,18 +100,39 @@ docker run -d \
   -e TZ='America/New_York' \
   -v claude-data:/root/.claude \
   -v session-config:/root/.config/claude-session-starter \
-  claude-session-starter
+  ghcr.io/mrmohebi/claude-session-starter:latest
 ```
 
 **Method C: Using docker-compose**
 ```bash
-# If using local credentials, edit docker-compose.yml and uncomment the local mount
+# Clone the repository
+git clone https://github.com/MrMohebi/claude-session-starter.git
+cd claude-session-starter
+
+# Edit docker-compose.yml if needed (timezone, hours, credentials mount)
 
 # Start with docker-compose
 docker-compose up -d
 
 # View logs
 docker-compose logs -f
+```
+
+**Method D: Build from source**
+```bash
+# Clone and build
+git clone https://github.com/MrMohebi/claude-session-starter.git
+cd claude-session-starter
+docker build -t claude-session-starter .
+
+# Then use your built image
+docker run -d \
+  --name claude-session-starter \
+  --restart unless-stopped \
+  -e TRIGGER_HOURS='9,13,17' \
+  -v ~/.claude:/root/.claude:ro \
+  -v session-config:/root/.config/claude-session-starter \
+  claude-session-starter
 ```
 
 ## Usage

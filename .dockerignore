@@ -1,28 +1,31 @@
 # Git files
 .git
 .gitignore
+.github
 
 # Documentation
 README.md
+CLAUDE-CLI-USAGE.md
+LICENSE
 
-# Installation script (not needed in container)
-install.sh
-
-# Environment files (use docker secrets/env instead)
-.env
-
-# Config and state (should be mounted as volume)
-config
-state
-*.log
+# IDE
+.idea
+.vscode
+.claude
 
 # System files
 .DS_Store
 Thumbs.db
 
-# Editor files
+# Logs and temp files
+*.log
+*.tmp
 *.swp
-*.swo
 *~
-.vscode/
-.idea/
+
+# Service files (not needed in Docker)
+claude-session-starter.service
+
+# Docker files
+docker-compose.yml
+.dockerignore

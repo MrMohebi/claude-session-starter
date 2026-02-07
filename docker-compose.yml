@@ -2,7 +2,12 @@ version: '3.8'
 
 services:
   claude-session-starter:
-    build: .
+    # Use pre-built image from GitHub Container Registry
+    image: ghcr.io/mrmohebi/claude-session-starter:latest
+
+    # Or build from source by uncommenting:
+    # build: .
+
     container_name: claude-session-starter
     restart: unless-stopped
 

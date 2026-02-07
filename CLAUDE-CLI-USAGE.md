@@ -46,19 +46,18 @@ pkill -f claude-session-starter.sh
 
 ### Docker Usage
 
+**Pre-built image:** `ghcr.io/mrmohebi/claude-session-starter:latest`
+
 **Option 1: Use your local Claude credentials**
 ```bash
-# Build image
-docker build -t claude-session-starter .
-
-# Run with your credentials
+# Run with your credentials (uses pre-built image)
 docker run -d \
   --name claude-session-starter \
   --restart unless-stopped \
   -e TRIGGER_HOURS='9,13,17' \
   -v ~/.claude:/root/.claude:ro \
   -v session-config:/root/.config/claude-session-starter \
-  claude-session-starter
+  ghcr.io/mrmohebi/claude-session-starter:latest
 
 # View logs
 docker logs -f claude-session-starter
@@ -69,7 +68,7 @@ docker logs -f claude-session-starter
 # Run interactively
 docker run -it \
   -v claude-data:/root/.claude \
-  claude-session-starter bash
+  ghcr.io/mrmohebi/claude-session-starter:latest bash
 
 # Inside container:
 claude  # Follow login prompts
@@ -82,12 +81,16 @@ docker run -d \
   -e TRIGGER_HOURS='9,13,17' \
   -v claude-data:/root/.claude \
   -v session-config:/root/.config/claude-session-starter \
-  claude-session-starter
+  ghcr.io/mrmohebi/claude-session-starter:latest
 ```
 
 **Option 3: docker-compose**
 ```bash
-# Start
+# Clone repo to get docker-compose.yml
+git clone https://github.com/MrMohebi/claude-session-starter.git
+cd claude-session-starter
+
+# Start (uses pre-built image from GHCR)
 docker-compose up -d
 
 # View logs
