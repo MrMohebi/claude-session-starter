@@ -9,7 +9,7 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 # Install Claude CLI
-RUN npm install -g @anthropic-ai/claude-cli
+RUN npm install -g @anthropic-ai/claude-code
 
 # Set working directory
 WORKDIR /app
