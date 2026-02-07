@@ -1,0 +1,28 @@
+# Git files
+.git
+.gitignore
+
+# Documentation
+README.md
+
+# Installation script (not needed in container)
+install.sh
+
+# Environment files (use docker secrets/env instead)
+.env
+
+# Config and state (should be mounted as volume)
+config
+state
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

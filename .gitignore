@@ -1,0 +1,29 @@
+# API Keys and sensitive configuration
+config
+*.key
+.env
+
+# State files
+state
+
+# Log files
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Docker
+docker-compose.override.yml
+.dockerignore.bak
+
+# Backup files
+*.tar.gz
+*.backup

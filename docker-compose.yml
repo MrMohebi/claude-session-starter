@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  claude-session-starter:
+    build: .
+    container_name: claude-session-starter
+    restart: unless-stopped
+
+    # Environment variables
+    environment:
+      - TZ=America/New_York  # Set your timezone
+      - TRIGGER_HOURS=9,13,17  # Hours to trigger sessions (9am, 1pm, 5pm)
+
+    # Mount volumes for persistent data
+    volumes:
+      # Claude CLI credentials (authenticated session)
+      - claude-data:/root/.claude
+      # Session starter configuration and logs
+      - session-config:/root/.config/claude-session-starter
+
+    # Optional: Mount your local Claude CLI credentials instead
+    # This allows you to use your existing authenticated session
+    # volumes:
+    #   - ~/.claude:/root/.claude:ro
+    #   - session-config:/root/.config/claude-session-starter
+
+volumes:
+  # Persistent storage for Claude CLI authentication
+  claude-data:
+    driver: local
+
+  # Persistent storage for session starter config/logs
+  session-config:
+    driver: local

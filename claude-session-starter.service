@@ -1,0 +1,38 @@
+[Unit]
+Description=Claude Session Starter - Smart AI Session Management
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/MrMohebi/claude-session-starter
+
+[Service]
+Type=simple
+User=%i
+Group=%i
+WorkingDirectory=/home/%i/claude-session-starter
+
+# Main service command
+ExecStart=/home/%i/claude-session-starter/claude-session-starter.sh --daemon
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitBurst=5
+StartLimitIntervalSec=300
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/%i/.config/claude-session-starter
+
+# Environment
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=claude-session-starter
+
+[Install]
+WantedBy=multi-user.target
