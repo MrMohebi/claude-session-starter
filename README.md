@@ -177,18 +177,33 @@ sudo cp claude-session-starter@.service /etc/systemd/system/
 sudo systemctl daemon-reload
 ```
 
-2. **(Optional)** If you cloned the repo to a non-default location, create an environment file:
+2. **(Optional)** Configure installation path and/or proxy settings:
+
+Create an environment file for advanced configuration:
 ```bash
-# For user 'john' with installation at /opt/claude-session-starter
+# For user 'john'
 sudo nano /etc/default/claude-session-starter-john
 ```
 
-Add this line (replace with your actual path):
+Available options (all optional):
 ```bash
+# Custom installation path (defaults to /home/username/claude-session-starter)
 INSTALL_PATH=/opt/claude-session-starter
+
+# HTTP/HTTPS proxy
+HTTP_PROXY=http://proxy.example.com:8080
+HTTPS_PROXY=http://proxy.example.com:8080
+
+# SOCKS proxy (socks5:// or socks4://)
+ALL_PROXY=socks5://proxy.example.com:1080
+
+# Proxy exceptions (comma-separated)
+NO_PROXY=localhost,127.0.0.1,.local
 ```
 
-**Note:** If you don't create this file, it defaults to `/home/username/claude-session-starter`
+**Note:** All settings are optional. If you don't create this file:
+- Installation path defaults to `/home/username/claude-session-starter`
+- No proxy is used (direct connection)
 
 3. Enable and start for your user (replace `username` with your actual username):
 ```bash
@@ -229,10 +244,28 @@ Logs: `~/.config/claude-session-starter/session.log`
 
 ## Docker Environment Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `TRIGGER_HOURS` | Hours to trigger (comma-separated) | `9,13,17` |
-| `TZ` | Timezone | `America/New_York` |
+| Variable        | Description                        | Example                           |
+|-----------------|------------------------------------|-----------------------------------|
+| `TRIGGER_HOURS` | Hours to trigger (comma-separated) | `9,13,17`                         |
+| `TZ`            | Timezone                           | `America/New_York`                |
+| `HTTP_PROXY`    | HTTP proxy server                  | `http://proxy.example.com:8080`   |
+| `HTTPS_PROXY`   | HTTPS proxy server                 | `http://proxy.example.com:8080`   |
+| `ALL_PROXY`     | SOCKS proxy server                 | `socks5://proxy.example.com:1080` |
+| `NO_PROXY`      | Proxy exceptions                   | `localhost,127.0.0.1`             |
+
+**Example with proxy:**
+```bash
+docker run -d \
+  --name claude-session-starter \
+  --restart unless-stopped \
+  -e TRIGGER_HOURS='9,13,17' \
+  -e TZ='America/New_York' \
+  -e HTTP_PROXY='http://proxy.example.com:8080' \
+  -e HTTPS_PROXY='http://proxy.example.com:8080' \
+  -v ~/.claude:/root/.claude:ro \
+  -v session-config:/root/.config/claude-session-starter \
+  ghcr.io/mrmohebi/claude-session-starter:latest
+```
 
 ## How It Works
 

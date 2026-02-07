@@ -9,9 +9,13 @@ Type=simple
 User=%i
 Group=%i
 
-# Load installation path from environment file
+# Load installation path and proxy settings from environment file
 # Create /etc/default/claude-session-starter-%i with:
-# INSTALL_PATH=/path/to/claude-session-starter
+#   INSTALL_PATH=/path/to/claude-session-starter
+#   HTTP_PROXY=http://proxy.example.com:8080
+#   HTTPS_PROXY=http://proxy.example.com:8080
+#   ALL_PROXY=socks5://proxy.example.com:1080
+#   NO_PROXY=localhost,127.0.0.1
 EnvironmentFile=-/etc/default/claude-session-starter-%i
 
 # Main service command (uses INSTALL_PATH from environment file, defaults to /home/%i/claude-session-starter)
